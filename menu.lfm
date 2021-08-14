@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<popupForm name="popup" width="50" height="200" placement="mouse" formType="undefined">
+
+<script>
+
+</script>
+
+<button align="top" height="50" text="Mover" onClick="mover(sheet.laranja)"/>
+<button align="top" height="50" text="Mover" onClick="mover(sheet.laranja)"/>
+
+</popupForm>

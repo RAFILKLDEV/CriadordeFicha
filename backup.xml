@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form formType="sheetTemplate" dataType="br.com.meusite.MeuDataType"
+      title="Ficha de Teste" name="frmFichaTeste" width="50">
+
+<script>
+
+  require("gui.lua");
+
+  local modoSelecao = {'Select','Editar'}
+  local objetoXD
+  local estado = {x = 0, y = 0}
+  local posicaoMouse = {x = 0, y = 0}
+  local objetoMouse = ""
+  local nomesRegistrados = {}
+  local numeroDeObjetos = 0
+  local modoAtual = ""
+
+  local function menu(localX, localY)
+
+    local menuzinho = GUI.newPopupForm("popup")
+
+    menuzinho:setNodeObject(self.sheet)
+
+    GUI.showPopup(menuzinho, {placement="center"})
+
+    showMessage("execeutei")
+
+  end
+
+  local function selection(event,name)
+  
+    posicaoMouse.x = event.x
+    posicaoMouse.y = event.y
+
+    local novoControle = self:findControlByName(name)
+
+    novoControle.left = posicaoMouse.x
+    novoControle.top = posicaoMouse.y
+    novoControle.enabled = false
+    sheet.amarelo = "x = " .. posicaoMouse.x .. " y = " .. posicaoMouse.y
+
+  end
+
+  local function mover(name)
+
+    local novoControle = self:findControlByName(name)
+
+    novoControle.left = posicaoMouse.x
+    novoControle.top = posicaoMouse.y
+    sheet.amarelo = "x = " .. posicaoMouse.x .. " y = " .. posicaoMouse.y
+
+  end
+
+  local function testeDeNome()
+
+    local nome = "rectangle" 
+    local novoNome = nome .. (numeroDeObjetos)
+
+      if numeroDeObjetos == 0 then
+        -- Primeiro Objeto
+        table.insert(nomesRegistrados, novoNome)
+        numeroDeObjetos = numeroDeObjetos + 1
+        nomeTemp = novoNome
+        return novoNome    
+
+      else numeroDeObjetos = numeroDeObjetos + 1  
+        table.insert(nomesRegistrados, novoNome) 
+        return novoNome
+        
+      end
+
+  end
+
+ 
+
+  local function ferRectangle()
+
+  local novoEdit = GUI.newRectangle()
+    novoEdit.left = 100
+    novoEdit.top = 100
+    novoEdit.color = "blue"
+    novoEdit:setParent(self.ficha)
+    novoEdit.enabled = true
+    novoEdit.hitTest = true
+    novoEdit.onClick = function()
+
+      mover(novoEdit.name)
+
+    end
+
+    novoEdit.onMouseMove = function()
+
+      sheet.laranja = novoEdit.name
+
+    end
+
+    novoEdit.name = testeDeNome()
+
+    showMessage(tableToStr(nomesRegistrados))
+
+    return novoEdit.name
+
+  end
+
+
+  
+
+</script>
+
+
+-- Barra de ferramentas
+
+<rectangle name="barraDeFerramentas" align="left" width="50" color="yellow">
+  <layout align="left" height="25">
+  <button align="top" width="50" text="A" onClick="ferRectangle()"/>
+  <button align="top" width="50" text="Seleção" onClick="select()"/>
+  <button align="top" width="50" text="Editar" onClick="ferRectangle()"/>
+  </layout>
+
+    
+
+</rectangle>
+
+-- Area da Ficha
+
+<layout name="ficha" align="left" width="1000">
+  <rectangle name="imagem" left="0" top="0" align="left" width="500" onMouseMove="selection(event, sheet.laranja)" onMouseDown="" onMenu="menu(x,y)" onMouseUp="" onClick="menu()" hitTest="true"/>
+  <edit name="editfoda" left="0" top="0" field="laranja"/>
+  <edit name="editfoda2" left="100" width="250" top="0" field="amarelo"/>
+
+
+</layout>
+
+
+</form>
