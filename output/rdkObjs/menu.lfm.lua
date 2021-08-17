@@ -43,7 +43,7 @@ local function constructNew_popup()
     obj.button2:setParent(obj);
     obj.button2:setAlign("top");
     obj.button2:setHeight(50);
-    obj.button2:setText("Mover");
+    obj.button2:setText("Selecionar");
     obj.button2:setName("button2");
 
     obj._e_event0 = obj.button1:addEventListener("onClick",

@@ -47,12 +47,6 @@ local function constructNew_frmFichaTeste()
 
   local function kek(name)
 
-    if alternador == true then
-
-
-
-    end
-
 
   end
 
@@ -106,13 +100,21 @@ local function constructNew_frmFichaTeste()
         novoEdit:setParent(self.ficha)
         novoEdit.src = "/imagens/dot.png"
         novoEdit.hitTest = true
-        novoEdit.onClick = function()
+        novoEdit.onMouseDown = function(event)
           
-        novoEdit.left =  posicaoMouse.x
-        novoEdit.top = posicaoMouse.y
+          
 
-    end  
+        end  
+        novoEdit.onMouseUp = function(event)
+          
+        end
 
+        novoEdit.onMouseEnter = function()
+          novoControle.enabled = false
+        end
+        novoEdit.onMouseLeave = function()
+          novoControle.enabled = true
+        end
   end
 
   local function testeDeNome()
@@ -146,6 +148,11 @@ local function constructNew_frmFichaTeste()
     novoEdit:setParent(self.ficha)
     novoEdit.enabled = true
     novoEdit.hitTest = true
+    novoEdit.onMouseDown = function(event)
+
+      novoEdit.left = posicaoMouse.x
+
+    end
     novoEdit.onClick = function()
 
       selecionar(novoEdit.name, "left", "top", false)
@@ -153,9 +160,10 @@ local function constructNew_frmFichaTeste()
 
     end
 
-    novoEdit.onMouseMove = function()
+    novoEdit.onStartDrag = function(drag,x,y)
 
-      sheet.laranja = novoEdit.name
+      drag.name = novoEdit.name
+      
 
     end
 
@@ -252,29 +260,35 @@ local function constructNew_frmFichaTeste()
             ferRectangle()
         end, obj);
 
-    obj._e_event3 = obj.imagem:addEventListener("onMouseMove",
+    obj._e_event3 = obj.imagem:addEventListener("onStartDrop",
+        function (_, drop, x, y, drag)
+            kek(event)
+        end, obj);
+
+    obj._e_event4 = obj.imagem:addEventListener("onMouseMove",
         function (_, event)
             selection(event, sheet.laranja)
         end, obj);
 
-    obj._e_event4 = obj.imagem:addEventListener("onMouseDown",
+    obj._e_event5 = obj.imagem:addEventListener("onMouseDown",
         function (_, event)
         end, obj);
 
-    obj._e_event5 = obj.imagem:addEventListener("onMenu",
+    obj._e_event6 = obj.imagem:addEventListener("onMenu",
         function (_, x, y)
             menu(x,y)
         end, obj);
 
-    obj._e_event6 = obj.imagem:addEventListener("onMouseUp",
+    obj._e_event7 = obj.imagem:addEventListener("onMouseUp",
         function (_, event)
         end, obj);
 
-    obj._e_event7 = obj.imagem:addEventListener("onClick",
+    obj._e_event8 = obj.imagem:addEventListener("onClick",
         function (_)
         end, obj);
 
     function obj:_releaseEvents()
+        __o_rrpgObjs.removeEventListenerById(self._e_event8);
         __o_rrpgObjs.removeEventListenerById(self._e_event7);
         __o_rrpgObjs.removeEventListenerById(self._e_event6);
         __o_rrpgObjs.removeEventListenerById(self._e_event5);

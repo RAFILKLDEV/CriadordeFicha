@@ -6,6 +6,6 @@
 </script>
 
 <button align="top" height="50" text="Mover" onClick="mover(sheet.laranja)"/>
-<button align="top" height="50" text="Mover" onClick="mover(sheet.laranja)"/>
+<button align="top" height="50" text="Selecionar" onClick="mover(sheet.laranja)"/>
 
 </popupForm>

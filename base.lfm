@@ -15,14 +15,8 @@
   local modoAtual = ""
   local alternador = false
 
-  local function kek(name)
-
-    if alternador == true then
-
-
-
-    end
-
+  local function kek()
+    drop:addData("text", dataValue)
 
   end
 
@@ -76,13 +70,21 @@
         novoEdit:setParent(self.ficha)
         novoEdit.src = "/imagens/dot.png"
         novoEdit.hitTest = true
-        novoEdit.onClick = function()
+        novoEdit.onMouseDown = function(event)
           
-        novoEdit.left =  posicaoMouse.x
-        novoEdit.top = posicaoMouse.y
+          
 
-    end  
+        end  
+        novoEdit.onMouseUp = function(event)
+          
+        end
 
+        novoEdit.onMouseEnter = function()
+          novoControle.enabled = false
+        end
+        novoEdit.onMouseLeave = function()
+          novoControle.enabled = true
+        end
   end
 
   local function testeDeNome()
@@ -116,6 +118,11 @@
     novoEdit:setParent(self.ficha)
     novoEdit.enabled = true
     novoEdit.hitTest = true
+    novoEdit.onMouseDown = function(event)
+
+      novoEdit.left = posicaoMouse.x
+
+    end
     novoEdit.onClick = function()
 
       selecionar(novoEdit.name, "left", "top", false)
@@ -123,9 +130,10 @@
 
     end
 
-    novoEdit.onMouseMove = function()
+    novoEdit.onStartDrag = function()
 
-      sheet.laranja = novoEdit.name
+      drag:addData("keksupremo", dataValue)
+      
 
     end
 
@@ -159,7 +167,8 @@
 -- Area da Ficha
 
 <layout name="ficha" align="left" width="1000">
-  <rectangle name="imagem" left="0" top="0" align="left" width="500" onMouseMove="selection(event, sheet.laranja)" onMouseDown="" onMenu="menu(x,y)" onMouseUp="" onClick="" hitTest="true"/>
+
+  <rectangle name="imagem" left="0" top="0" align="left" width="500" onStartDrop="kek(event)" onMouseMove="selection(event, sheet.laranja)" onMouseDown="" OnStartDrop="kek()" onMenu="menu(x,y)" onMouseUp="" onClick="" hitTest="true"/>
   <edit name="editfoda" left="0" top="0" field="laranja"/>
   <edit name="editfoda2" left="100" width="250" top="0" field="amarelo"/>
 
