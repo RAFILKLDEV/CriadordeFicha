@@ -36,85 +36,25 @@ local function constructNew_frmFichaTeste()
 
   require("gui.lua");
 
-  local modoSelecao = {'Select','Editar'}
   local estado = {x = 0, y = 0}
   local posicaoMouse = {x = 0, y = 0}
   local objetoMouse = ""
   local nomesRegistrados = {}
   local numeroDeObjetos = 0
-  local modoAtual = ""
-  local alternador = false
+  local alternador = 0
 
-  local function kek(name)
+  local function selection(event)
 
-
-  end
-
-  local function menu(localX, localY)
-
-    local menuzinho = GUI.newPopupForm("popup")
-
-    menuzinho:setNodeObject(self.sheet)
-
-    GUI.showPopup(menuzinho, {placement="mouse"})
-
-  end
-
-  local function selection(event,name)
-  
+    local novoControle = self:findControlByName(sheet.laranja)
     posicaoMouse.x = event.x
     posicaoMouse.y = event.y
     sheet.amarelo = "x = " .. posicaoMouse.x .. " y = " .. posicaoMouse.y
 
-    
-
-
-  end
-
-  function mover(name)
-
-    local novoControle = self:findControlByName(name)
-
-    novoControle.top = 600
-
-  end
-
-  function selecionar(name, o1, o2, o3)
-
-    local novoControle = self:findControlByName(name)
-
-    local largura = 0
-    local altura = 0
-    
-
-    if o3 == true then
-      largura = novoControle.width - 8
-      altura = novoControle.height - 8
+    if alternador == 1 then
+      novoControle.left = posicaoMouse.x
+      novoControle.top = posicaoMouse.y
     end
 
-    local novoEdit = GUI.newImage()
-        novoEdit.left = novoControle[o1] + (largura)
-        novoEdit.top = novoControle[o2] + (altura)
-        novoEdit.width = 8
-        novoEdit.height = 8
-        novoEdit:setParent(self.ficha)
-        novoEdit.src = "/imagens/dot.png"
-        novoEdit.hitTest = true
-        novoEdit.onMouseDown = function(event)
-          
-          
-
-        end  
-        novoEdit.onMouseUp = function(event)
-          
-        end
-
-        novoEdit.onMouseEnter = function()
-          novoControle.enabled = false
-        end
-        novoEdit.onMouseLeave = function()
-          novoControle.enabled = true
-        end
   end
 
   local function testeDeNome()
@@ -137,34 +77,29 @@ local function constructNew_frmFichaTeste()
 
   end
 
- 
-
   local function ferRectangle()
 
-  local novoEdit = GUI.newRectangle()
+    local novoEdit = GUI.newRectangle()
     novoEdit.left = 100
     novoEdit.top = 100
     novoEdit.color = "blue"
     novoEdit:setParent(self.ficha)
     novoEdit.enabled = true
     novoEdit.hitTest = true
+    novoEdit.onMouseUp = function(event)
+      showMessage("soltei")
+      alternador = 0
+    --  novoEdit.enabled = true
+    end
+
     novoEdit.onMouseDown = function(event)
-
-      novoEdit.left = posicaoMouse.x
-
-    end
-    novoEdit.onClick = function()
-
-      selecionar(novoEdit.name, "left", "top", false)
-      selecionar(novoEdit.name, "left", "top", true)
-
+      alternador = 1
+    --  novoEdit.enabled = false
+      local centerMouse = {x = novoEdit.width / 2, y = novoEdit.height / 2 }
     end
 
-    novoEdit.onStartDrag = function(drag,x,y)
-
-      drag.name = novoEdit.name
-      
-
+    novoEdit.onMouseEnter = function(event)
+      sheet.laranja = novoEdit.name
     end
 
     novoEdit.name = testeDeNome()
@@ -173,10 +108,7 @@ local function constructNew_frmFichaTeste()
 
     return novoEdit.name
 
-  end
-
-
-  
+  end 
 
 
 
@@ -245,6 +177,13 @@ local function constructNew_frmFichaTeste()
     obj.editfoda2:setTop(0);
     obj.editfoda2:setField("amarelo");
 
+    obj.barraDeFerramentas2 = GUI.fromHandle(_obj_newObject("rectangle"));
+    obj.barraDeFerramentas2:setParent(obj);
+    obj.barraDeFerramentas2:setName("barraDeFerramentas2");
+    obj.barraDeFerramentas2:setAlign("right");
+    obj.barraDeFerramentas2:setWidth(300);
+    obj.barraDeFerramentas2:setColor("brown");
+
     obj._e_event0 = obj.button1:addEventListener("onClick",
         function (_)
             ferRectangle()
@@ -260,39 +199,12 @@ local function constructNew_frmFichaTeste()
             ferRectangle()
         end, obj);
 
-    obj._e_event3 = obj.imagem:addEventListener("onStartDrop",
-        function (_, drop, x, y, drag)
-            kek(event)
-        end, obj);
-
-    obj._e_event4 = obj.imagem:addEventListener("onMouseMove",
+    obj._e_event3 = obj.imagem:addEventListener("onMouseMove",
         function (_, event)
-            selection(event, sheet.laranja)
-        end, obj);
-
-    obj._e_event5 = obj.imagem:addEventListener("onMouseDown",
-        function (_, event)
-        end, obj);
-
-    obj._e_event6 = obj.imagem:addEventListener("onMenu",
-        function (_, x, y)
-            menu(x,y)
-        end, obj);
-
-    obj._e_event7 = obj.imagem:addEventListener("onMouseUp",
-        function (_, event)
-        end, obj);
-
-    obj._e_event8 = obj.imagem:addEventListener("onClick",
-        function (_)
+            selection(event)
         end, obj);
 
     function obj:_releaseEvents()
-        __o_rrpgObjs.removeEventListenerById(self._e_event8);
-        __o_rrpgObjs.removeEventListenerById(self._e_event7);
-        __o_rrpgObjs.removeEventListenerById(self._e_event6);
-        __o_rrpgObjs.removeEventListenerById(self._e_event5);
-        __o_rrpgObjs.removeEventListenerById(self._e_event4);
         __o_rrpgObjs.removeEventListenerById(self._e_event3);
         __o_rrpgObjs.removeEventListenerById(self._e_event2);
         __o_rrpgObjs.removeEventListenerById(self._e_event1);
@@ -316,6 +228,7 @@ local function constructNew_frmFichaTeste()
         if self.editfoda ~= nil then self.editfoda:destroy(); self.editfoda = nil; end;
         if self.editfoda2 ~= nil then self.editfoda2:destroy(); self.editfoda2 = nil; end;
         if self.imagem ~= nil then self.imagem:destroy(); self.imagem = nil; end;
+        if self.barraDeFerramentas2 ~= nil then self.barraDeFerramentas2:destroy(); self.barraDeFerramentas2 = nil; end;
         if self.button2 ~= nil then self.button2:destroy(); self.button2 = nil; end;
         self:_oldLFMDestroy();
     end;

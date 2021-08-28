@@ -6,85 +6,25 @@
 
   require("gui.lua");
 
-  local modoSelecao = {'Select','Editar'}
   local estado = {x = 0, y = 0}
   local posicaoMouse = {x = 0, y = 0}
   local objetoMouse = ""
   local nomesRegistrados = {}
   local numeroDeObjetos = 0
-  local modoAtual = ""
-  local alternador = false
+  local alternador = 0
 
-  local function kek()
-    drop:addData("text", dataValue)
+  local function selection(event)
 
-  end
-
-  local function menu(localX, localY)
-
-    local menuzinho = GUI.newPopupForm("popup")
-
-    menuzinho:setNodeObject(self.sheet)
-
-    GUI.showPopup(menuzinho, {placement="mouse"})
-
-  end
-
-  local function selection(event,name)
-  
+    local novoControle = self:findControlByName(sheet.laranja)
     posicaoMouse.x = event.x
     posicaoMouse.y = event.y
     sheet.amarelo = "x = " .. posicaoMouse.x .. " y = " .. posicaoMouse.y
 
-    
-
-
-  end
-
-  function mover(name)
-
-    local novoControle = self:findControlByName(name)
-
-    novoControle.top = 600
-
-  end
-
-  function selecionar(name, o1, o2, o3)
-
-    local novoControle = self:findControlByName(name)
-
-    local largura = 0
-    local altura = 0
-    
-
-    if o3 == true then
-      largura = novoControle.width - 8
-      altura = novoControle.height - 8
+    if alternador == 1 then
+      novoControle.left = posicaoMouse.x
+      novoControle.top = posicaoMouse.y
     end
 
-    local novoEdit = GUI.newImage()
-        novoEdit.left = novoControle[o1] + (largura)
-        novoEdit.top = novoControle[o2] + (altura)
-        novoEdit.width = 8
-        novoEdit.height = 8
-        novoEdit:setParent(self.ficha)
-        novoEdit.src = "/imagens/dot.png"
-        novoEdit.hitTest = true
-        novoEdit.onMouseDown = function(event)
-          
-          
-
-        end  
-        novoEdit.onMouseUp = function(event)
-          
-        end
-
-        novoEdit.onMouseEnter = function()
-          novoControle.enabled = false
-        end
-        novoEdit.onMouseLeave = function()
-          novoControle.enabled = true
-        end
   end
 
   local function testeDeNome()
@@ -107,34 +47,29 @@
 
   end
 
- 
-
   local function ferRectangle()
 
-  local novoEdit = GUI.newRectangle()
+    local novoEdit = GUI.newRectangle()
     novoEdit.left = 100
     novoEdit.top = 100
     novoEdit.color = "blue"
     novoEdit:setParent(self.ficha)
     novoEdit.enabled = true
     novoEdit.hitTest = true
+    novoEdit.onMouseUp = function(event)
+      showMessage("soltei")
+      alternador = 0
+    --  novoEdit.enabled = true
+    end
+
     novoEdit.onMouseDown = function(event)
-
-      novoEdit.left = posicaoMouse.x
-
-    end
-    novoEdit.onClick = function()
-
-      selecionar(novoEdit.name, "left", "top", false)
-      selecionar(novoEdit.name, "left", "top", true)
-
+      alternador = 1
+    --  novoEdit.enabled = false
+      local centerMouse = {x = novoEdit.width / 2, y = novoEdit.height / 2 }
     end
 
-    novoEdit.onStartDrag = function()
-
-      drag:addData("keksupremo", dataValue)
-      
-
+    novoEdit.onMouseEnter = function(event)
+      sheet.laranja = novoEdit.name
     end
 
     novoEdit.name = testeDeNome()
@@ -143,10 +78,7 @@
 
     return novoEdit.name
 
-  end
-
-
-  
+  end 
 
 </script>
 
@@ -159,21 +91,20 @@
   <button align="top" width="50" text="Seleção" onClick="select()"/>
   <button align="top" width="50" text="Editar" onClick="ferRectangle()"/>
   </layout>
-
-    
-
 </rectangle>
 
 -- Area da Ficha
 
 <layout name="ficha" align="left" width="1000">
-
-  <rectangle name="imagem" left="0" top="0" align="left" width="500" onStartDrop="kek(event)" onMouseMove="selection(event, sheet.laranja)" onMouseDown="" OnStartDrop="kek()" onMenu="menu(x,y)" onMouseUp="" onClick="" hitTest="true"/>
+  <rectangle name="imagem" left="0" top="0" align="left" width="500" onMouseMove="selection(event)" hitTest="true"/>
   <edit name="editfoda" left="0" top="0" field="laranja"/>
   <edit name="editfoda2" left="100" width="250" top="0" field="amarelo"/>
-
-
 </layout>
 
+-- Area Informações controle
+
+<rectangle name="barraDeFerramentas2" align="right" width="300" color="brown">
+
+</rectangle>
 
 </form>
