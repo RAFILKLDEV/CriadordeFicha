@@ -82,6 +82,10 @@
 
 </script>
 
+<template name="MinhaTag">
+  <label text="Atributo $(titulo)" align="left" horzTextAlign="center"/>
+  <edit text="$(conteudo)" align="left" horzTextAlign="center"/>
+</template>
 
 -- Barra de ferramentas
 
@@ -104,6 +108,10 @@
 -- Area Informações controle
 
 <rectangle name="barraDeFerramentas2" align="right" width="300" color="brown">
+
+<MinhaTag align="top" height="35"/>
+<MinhaTag align="top" height="35"/>
+<MinhaTag align="top" height="35"/>
 
 </rectangle>
 
