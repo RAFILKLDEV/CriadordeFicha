@@ -5,6 +5,7 @@
 <script>
 
   require("gui.lua");
+  require("utils.lua");
 
   local estado = {x = 0, y = 0}
   local posicaoMouse = {x = 0, y = 0}
@@ -57,7 +58,6 @@
     novoEdit.enabled = true
     novoEdit.hitTest = true
     novoEdit.onMouseUp = function(event)
-      showMessage("soltei")
       alternador = 0
     --  novoEdit.enabled = true
     end
@@ -70,6 +70,7 @@
 
     novoEdit.onMouseEnter = function(event)
       sheet.laranja = novoEdit.name
+      self.field_name.text = novoEdit.name
     end
 
     novoEdit.name = testeDeNome()
@@ -80,12 +81,12 @@
 
   end 
 
-</script>
+  local function bob()
+    
+    self.field_name.items = nomesRegistrados
+  end
 
-<template name="MinhaTag">
-  <label text="Atributo $(titulo)" align="left" horzTextAlign="center"/>
-  <edit text="$(conteudo)" align="left" horzTextAlign="center"/>
-</template>
+</script>
 
 -- Barra de ferramentas
 
@@ -93,7 +94,7 @@
   <layout align="left" height="25">
   <button align="top" width="50" text="A" onClick="ferRectangle()"/>
   <button align="top" width="50" text="Seleção" onClick="select()"/>
-  <button align="top" width="50" text="Editar" onClick="ferRectangle()"/>
+  <button align="top" width="50" text="Editar" onClick="bob()"/>
   </layout>
 </rectangle>
 
@@ -109,9 +110,40 @@
 
 <rectangle name="barraDeFerramentas2" align="right" width="300" color="brown">
 
-<MinhaTag align="top" height="35"/>
-<MinhaTag align="top" height="35"/>
-<MinhaTag align="top" height="35"/>
+<layout align="left" width="150">
+
+<label text="name" align="top" height="35" horzTextAlign="center"/>
+<label text="left" align="top" height="35" horzTextAlign="center"/>
+<label text="top" align="top" height="35" horzTextAlign="center"/>
+<label text="width" align="top" height="35" horzTextAlign="center"/>
+<label text="height" align="top" height="35" horzTextAlign="center"/>
+<label text="opacity" align="top" height="35" horzTextAlign="center"/>
+<label text="rotationAngle" align="top" height="35" horzTextAlign="center"/>
+<label text="parent" align="top" height="35" horzTextAlign="center"/>
+
+</layout>
+
+<layout align="left" width="150">
+
+<comboBox name="field_name" align="top" height="35" transparent="true" horzTextAlign="center">
+  <event name="onChange">
+
+    local novoControle = self:findControlByName(sheet.laranja)
+
+      sheet.field_left =  novoControle.left
+      sheet.field_top = novoControle.top
+
+
+  </event>
+<edit field="field_left" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_top" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_width" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_height" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_opacity" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_rotationAngle" align="top" height="35" transparent="true" horzTextAlign="center"/>
+<edit field="field_parent" align="top" height="35" transparent="true" horzTextAlign="center"/>
+
+</layout>
 
 </rectangle>
 
